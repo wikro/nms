@@ -1,0 +1,15 @@
+route:
+  receiver: "wikro"
+
+  group_by: [ "service", "system" ]
+
+  group_wait: 1m
+  group_interval: 5m
+
+receivers:
+  - name: "wikro"
+    pushover_configs:
+      - user_key: "utkipixnp54wk8cctqvir4n9cvze6b"
+        token: "aht9npkkj6xvnmrd81mvvgg3mwz31a"
+        retry: 1m
+        expire: 0s

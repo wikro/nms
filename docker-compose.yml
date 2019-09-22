@@ -1,0 +1,75 @@
+version: "3.5"
+
+services:
+  nginx:
+    image: "nginx"
+    restart: "unless-stopped"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./nginx/www:/etc/nginx/www:ro"
+      - "./certbot:/etc/letsencrypt:ro"
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - "./certbot:/etc/letsencrypt:rw"
+    command:
+      - "renew"
+    depends_on:
+      - "nginx"
+
+  prometheus:
+    image: "prom/prometheus"
+    restart: "unless-stopped"
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus:/etc/prometheus:ro"
+      - "prometheus-data:/prometheus:rw"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.external-url=http://localhost/prometheus"
+      - "--web.route-prefix=/"
+      - "--web.enable-lifecycle"
+      - "--web.enable-admin-api"
+    depends_on:
+      - "alertmanager"
+
+  alertmanager:
+    image: "prom/alertmanager"
+    restart: "unless-stopped"
+    ports:
+      - "9093:9093"
+    volumes:
+      - "./alertmanager:/etc/alertmanager:ro"
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--web.external-url=http://localhost/alertmanager"
+      - "--web.route-prefix=/"
+
+  grafana:
+    image: "grafana/grafana"
+    restart: "unless-stopped"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./grafana/grafana.ini:/etc/grafana/grafana.ini:ro"
+      - "grafana-data:/var/lib/grafana:rw"
+    depends_on:
+      - "prometheus"
+
+  blackbox:
+    image: "prom/blackbox-exporter"
+    restart: "unless-stopped"
+    ports:
+      - "9115:9115"
+    volumes:
+      - "./blackbox_exporter:/etc/blackbox_exporter:ro"
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
