@@ -1,26 +1,40 @@
 groups:
+  - name: "up"
+    rules:
+      - alert: "Down"
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "{{$labels.instance}} is down."
+          description: "{{$labels.instance}} has been down for more than 5 minutes." 
+
   - name: "disk"
     rules:
       - alert: "DiskSpaceCritical"
         expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.05
-        for: 10m
+        for: 5m
         labels:
           severity: "critical"
         annotations:
-          summary: "Free disk space"
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} below 5%"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 5% free disk space remaining."
 
       - alert: "DiskSpaceMajor"
         expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.10
-        for: 10m
+        for: 5m
         labels:
           severity: "major"
         annotations:
-          summary: "Free disk space"
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} below 10%"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 10% free disk space remaining."
 
       - alert: "DiskSpaceMinor"
         expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.20
-        for: 10m
+        for: 5m
         labels:
           severity: "minor"
         annotations:
-          summary: "Free disk space"
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} below 20%"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 20% free disk space remaining."

@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3"
 
 services:
   nginx:
@@ -31,12 +31,10 @@ services:
       - "prometheus-data:/prometheus:rw"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--web.external-url=http://localhost/prometheus"
+      - "--web.external-url=https://nms.hjkl.se/prometheus"
       - "--web.route-prefix=/"
       - "--web.enable-lifecycle"
       - "--web.enable-admin-api"
-    depends_on:
-      - "alertmanager"
 
   alertmanager:
     image: "prom/alertmanager"
@@ -47,7 +45,7 @@ services:
       - "./alertmanager:/etc/alertmanager:ro"
     command:
       - "--config.file=/etc/alertmanager/alertmanager.yml"
-      - "--web.external-url=http://localhost/alertmanager"
+      - "--web.external-url=https://nms.hjkl.se/alertmanager"
       - "--web.route-prefix=/"
 
   grafana:
@@ -58,8 +56,6 @@ services:
     volumes:
       - "./grafana/grafana.ini:/etc/grafana/grafana.ini:ro"
       - "grafana-data:/var/lib/grafana:rw"
-    depends_on:
-      - "prometheus"
 
   blackbox:
     image: "prom/blackbox-exporter"
@@ -72,4 +68,3 @@ services:
 volumes:
   prometheus-data:
   grafana-data:
-

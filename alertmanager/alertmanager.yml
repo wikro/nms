@@ -13,3 +13,6 @@ receivers:
         token: "aht9npkkj6xvnmrd81mvvgg3mwz31a"
         retry: 1m
         expire: 0s
+        title: "({{$commonLabels.severity}}) {{$commonLabels.instance}}: {{$commonLabels.alertname}}"
+        message: "{{$commonAnnotations.description}}"
+        
