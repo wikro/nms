@@ -12,6 +12,15 @@ groups:
 
   - name: "disk"
     rules:
+      - alert: "DiskFilledIn24h"
+        expr: predict_linear(node_filesystem_avail_bytes{job="node",instance="$hostname:9100",fstype!="tmpfs"}[1h], 24 * 3600)
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} will fill in 24h"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} will fill up and run out of space in 24 hours"
+
       - alert: "DiskSpaceCritical"
         expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.05
         for: 5m
