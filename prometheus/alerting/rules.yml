@@ -8,21 +8,61 @@ groups:
           severity: "critical"
         annotations:
           summary: "{{$labels.instance}} is down."
-          description: "{{$labels.instance}} has been down for more than 5 minutes." 
+          description: "{{$labels.instance}} has been down for more than 5 minutes."
 
-  - name: "disk"
+  - name: "http"
     rules:
-      - alert: "DiskFilledIn24h"
-        expr: predict_linear(node_filesystem_avail_bytes{job="node",instance="$hostname:9100",fstype!="tmpfs"}[1h], 24 * 3600)
+      - alert: "HttpResponse"
+        expr: probe_success{job="blackbox_http"} == 0
         for: 5m
         labels:
           severity: "critical"
         annotations:
-          summary: "{{$labels.instance}}: {{$labels.mountpoint}} will fill in 24h"
-          description: "{{$labels.mountpoint}} on {{$labels.instance}} will fill up and run out of space in 24 hours"
+          summary: "{{$labels.instance}} not responding HTTP 200 OK"
+          description: "{{$labels.instance}} is not responding with HTTP status code 200 OK"
+
+  - name: "icmp"
+    rules:
+      - alert: "IcmpReply"
+        expr: probe_success{job="blackbox_icmp"} == 0
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "{{$labels.instance}} not replying to ICMP"
+          description: "{{$labels.instance}} is not replying to ICMP"
+
+  - name: "disk"
+    rules:
+      - alert: "DiskFilledIn8h"
+        expr: predict_linear(node_filesystem_avail_bytes{job="node",fstype!="tmpfs"}[1h], 8 * 3600) <= 0
+        for: 5m
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} out of space in 8h"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} will fill up and run out of disk space in 8 hours based on the last hour of metrics"
+
+      - alert: "DiskFilledIn24h"
+        expr: predict_linear(node_filesystem_avail_bytes{job="node",fstype!="tmpfs"}[1h], 24 * 3600) <= 0
+        for: 5m
+        labels:
+          severity: "major"
+        annotations:
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} out of space in 24h"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} will fill up and run out of disk space in 24 hours based on the last hour of metrics"
+
+      - alert: "DiskFilledIn3d"
+        expr: predict_linear(node_filesystem_avail_bytes{job="node",fstype!="tmpfs"}[1h], 3 * 24 * 3600) <= 0
+        for: 5m
+        labels:
+          severity: "minor"
+        annotations:
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} out of space in 3d"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} will fill up and run out of disk space in 3 days based on the last hour of metrics"
 
       - alert: "DiskSpaceCritical"
-        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.05
+        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} * 100 / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 5
         for: 5m
         labels:
           severity: "critical"
@@ -31,7 +71,7 @@ groups:
           description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 5% free disk space remaining."
 
       - alert: "DiskSpaceMajor"
-        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.10
+        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} * 100 / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 10
         for: 5m
         labels:
           severity: "major"
@@ -40,7 +80,7 @@ groups:
           description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 10% free disk space remaining."
 
       - alert: "DiskSpaceMinor"
-        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 0.20
+        expr: node_filesystem_avail_bytes{job="node",fstype!="tmpfs"} * 100 / node_filesystem_size_bytes{job="node",fstype!="tmpfs"} < 20
         for: 5m
         labels:
           severity: "minor"

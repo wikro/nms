@@ -16,25 +16,21 @@ rule_files:
 
 scrape_configs:
   - job_name: "prometheus"
-    honor_labels: false
     static_configs:
       - targets:
           - "localhost:9090"
 
   - job_name: "node"
-    honor_labels: false
     file_sd_configs:
       - files:
           - "discovery/node/*.json"
 
   - job_name: "grafana"
-    honor_labels: false
     static_configs:
       - targets:
           - "grafana:3000"
 
   - job_name: "blackbox_icmp"
-    honor_labels: false
     metrics_path: /probe
     params:
       module: [icmp]
@@ -50,7 +46,6 @@ scrape_configs:
         replacement: blackbox:9115
 
   - job_name: "blackbox_http"
-    honor_labels: false
     metrics_path: /probe
     params:
       module: [http_2xx]

@@ -35,6 +35,7 @@ services:
       - "--web.route-prefix=/"
       - "--web.enable-lifecycle"
       - "--web.enable-admin-api"
+      - "--storage.tsdb.retention.time=90d"
 
   alertmanager:
     image: "prom/alertmanager"
@@ -56,6 +57,7 @@ services:
     volumes:
       - "./grafana/grafana.ini:/etc/grafana/grafana.ini:ro"
       - "grafana-data:/var/lib/grafana:rw"
+      - "./grafana/plugins:/var/lib/grafana/plugins:ro"
 
   blackbox:
     image: "prom/blackbox-exporter"
