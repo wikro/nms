@@ -2,7 +2,10 @@
   {
     "targets": [
       "https://hjkl.se/n9c.ics",
-      "https://nms.hjkl.se"
+      "https://nms.hjkl.se",
+      "https://nms.hjkl.se/prometheus",
+      "https://nms.hjkl.se/alertmanager",
+      "https://nms.hjkl.se/grafana"
     ],
     "labels": {
       "country": "nld",

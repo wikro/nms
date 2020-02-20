@@ -5,7 +5,7 @@ groups:
         expr: up == 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}} is down"
           description: "{{$labels.instance}} has been down for 5 minutes."
@@ -16,7 +16,7 @@ groups:
         expr: probe_success == 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}} not responding HTTP 200 OK"
           description: "{{$labels.instance}} has not responded with HTTP status code 200 OK for 5 minutes."
@@ -27,7 +27,7 @@ groups:
         expr: probe_success == 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}} not replying to ICMP"
           description: "{{$labels.instance}} has not replied to ICMP for 5 minutes."
@@ -38,7 +38,7 @@ groups:
         expr: predict_linear(node_memory_MemAvailable_bytes[1h], 15 * 60) <= 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}}: No memory in 15m"
           description: "{{$labels.instance}} will run out of available memory in 15 minutes based on the last 15 minutes of of metrics."
@@ -47,7 +47,7 @@ groups:
         expr: predict_linear(node_memory_SwapFree_bytes[1h], 15 * 60) <= 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}}: No swap in 15m"
           description: "{{$labels.instance}} will run out of available swap memory in 15 minutes based on the last 15 minutes of of metrics."
@@ -58,7 +58,7 @@ groups:
         expr: predict_linear(node_filesystem_avail_bytes{fstype!~"(tmp|root)fs"}[1h], 24 * 3600) <= 0
         for: 5m
         labels:
-          severity: "major"
+          severity: "4"
         annotations:
           summary: "{{$labels.instance}}: {{$labels.mountpoint}} no space in 24h"
           description: "{{$labels.mountpoint}} on {{$labels.instance}} will run out of disk space in 24 hours based on the last hour of metrics."
@@ -67,7 +67,7 @@ groups:
         expr: node_filesystem_avail_bytes{fstype!="tmpfs"} <= 0
         for: 5m
         labels:
-          severity: "critical"
+          severity: "5"
         annotations:
           summary: "{{$labels.instance}}: {{$labels.mountpoint}} no space"
           description: "{{$labels.mountpoint}} on {{$labels.instance}} is out of free disk space."

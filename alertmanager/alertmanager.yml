@@ -1,7 +1,7 @@
 route:
   receiver: "wikro"
 
-  group_by: [ "alertname", "service", "system" ]
+  group_by: [ "instance" ]
 
   group_wait: 1m
   group_interval: 5m
@@ -13,6 +13,6 @@ receivers:
         token: "aht9npkkj6xvnmrd81mvvgg3mwz31a"
         retry: 1m
         expire: 0s
-        title: "{{ range .Alerts }}({{ .Labels.severity }}) {{ .Labels.alertname }}{{ end }}"
+        title: "{{ range .Alerts }}(sev{{ .Labels.severity }}) {{ .Labels.alertname }}{{ end }}"
         message: "{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}"
         
