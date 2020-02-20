@@ -35,7 +35,7 @@ groups:
   - name: "memory"
     rules:
       - alert: "NoMemoryIn15m"
-        expr: predict_linear(node_memory_MemAvailable_bytes[15m], 15 * 60) <= 0
+        expr: predict_linear(node_memory_MemAvailable_bytes[1h], 15 * 60) <= 0
         for: 5m
         labels:
           severity: "critical"
@@ -44,7 +44,7 @@ groups:
           description: "{{$labels.instance}} will run out of available memory in 15 minutes based on the last 15 minutes of of metrics."
 
       - alert: "NoSwapIn15m"
-        expr: predict_linear(node_memory_SwapFree_bytes[15m], 15 * 60) <= 0
+        expr: predict_linear(node_memory_SwapFree_bytes[1h], 15 * 60) <= 0
         for: 5m
         labels:
           severity: "critical"
