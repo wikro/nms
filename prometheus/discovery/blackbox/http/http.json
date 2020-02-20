@@ -8,8 +8,18 @@
       "https://nms.hjkl.se/grafana"
     ],
     "labels": {
-      "country": "nld",
-      "continent": "europe"
+      "code": "nld",
+      "country": "Netherlands"
+    }
+  },
+  {
+    "targets": [
+      "https://www.aftonbladet.se",
+      "https://www.expressen.se"
+    ],
+    "labels": {
+      "code": "swe",
+      "country": "Sweden"
     }
   }
 ]
