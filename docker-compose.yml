@@ -2,7 +2,7 @@ version: "3"
 
 services:
   nginx:
-    image: "nginx"
+    image: "nginx:latest"
     restart: "unless-stopped"
     ports:
       - "80:80"
@@ -13,7 +13,7 @@ services:
       - "./certbot:/etc/letsencrypt:ro"
 
   certbot:
-    image: certbot/certbot
+    image: "certbot/certbot:latest"
     volumes:
       - "./certbot:/etc/letsencrypt:rw"
     command:
@@ -22,10 +22,10 @@ services:
       - "nginx"
 
   prometheus:
-    image: "prom/prometheus"
+    image: "prom/prometheus:latest"
     restart: "unless-stopped"
-    ports:
-      - "9090:9090"
+#    ports:
+#      - "9090:9090"
     volumes:
       - "./prometheus:/etc/prometheus:ro"
       - "prometheus-data:/prometheus:rw"
@@ -38,10 +38,10 @@ services:
       - "--storage.tsdb.retention.time=90d"
 
   alertmanager:
-    image: "prom/alertmanager"
+    image: "prom/alertmanager:latest"
     restart: "unless-stopped"
-    ports:
-      - "9093:9093"
+#    ports:
+#      - "9093:9093"
     volumes:
       - "./alertmanager:/etc/alertmanager:ro"
     command:
@@ -50,20 +50,20 @@ services:
       - "--web.route-prefix=/"
 
   grafana:
-    image: "grafana/grafana"
+    image: "grafana/grafana:latest"
     restart: "unless-stopped"
-    ports:
-      - "3000:3000"
+#    ports:
+#      - "3000:3000"
     volumes:
       - "./grafana/grafana.ini:/etc/grafana/grafana.ini:ro"
       - "grafana-data:/var/lib/grafana:rw"
       - "./grafana/plugins:/var/lib/grafana/plugins:ro"
 
   blackbox:
-    image: "prom/blackbox-exporter"
+    image: "prom/blackbox-exporter:latest"
     restart: "unless-stopped"
-    ports:
-      - "9115:9115"
+#    ports:
+#      - "9115:9115"
     volumes:
       - "./blackbox_exporter:/etc/blackbox_exporter:ro"
 

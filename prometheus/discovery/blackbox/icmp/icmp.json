@@ -1,5 +1,9 @@
 [
   {
-    "targets": [ "hjkl.se" ]
+    "targets": [
+      "hjkl.se",
+      "nms.hjkl.se",
+      "gloomhaven.hjkl.se"
+    ]
   }
 ]

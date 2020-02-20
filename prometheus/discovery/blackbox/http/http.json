@@ -1,31 +1,12 @@
 [
   {
     "targets": [
-      "https://www.norrskenhouse.org",
-      "https://www.norrskenfoundation.org"
-    ],
-    "labels": {
-      "country": "swe",
-      "continent": "europe"
-    }
-  },
-  {
-    "targets": [
       "https://hjkl.se/n9c.ics",
       "https://nms.hjkl.se"
     ],
     "labels": {
       "country": "nld",
       "continent": "europe"
-    }
-  },
-  {
-    "targets": [
-      "https://www.netflix.com"
-    ],
-    "labels": {
-      "country": "usa",
-      "continent": "north_america"
     }
   }
 ]

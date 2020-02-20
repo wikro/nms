@@ -1,7 +1,7 @@
 global:
-  scrape_interval: "10s"
-  evaluation_interval: "10s"
-  # scrape_timeout is set to the global default (10s).
+  scrape_interval: "10s"     # default = 10s
+  scrape_timeout: "10s"      # default = 10s
+  evaluation_interval: "1m"  # default = 1m
 
 # Alertmanager configuration
 alerting:
@@ -12,6 +12,7 @@ alerting:
 
 # Alerting rules
 rule_files:
+  - "recording/*.yml"
   - "alerting/*.yml"
 
 scrape_configs:
@@ -24,6 +25,11 @@ scrape_configs:
     file_sd_configs:
       - files:
           - "discovery/node/*.json"
+
+  - job_name: "irc_log"
+    static_configs:
+      - targets:
+          - "hjkl.se:9229"
 
   - job_name: "grafana"
     static_configs:
