@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus node_exporter
+Documentation=https://github.com/prometheus/node_exporter https://prometheus.io/docs/guides/node-exporter
+
+[Service]
+User=node_exporter
+Restart=on-failure
+ExecStart=/opt/node_exporter/node_exporter
+
+[Install]
+WantedBy=default.target
