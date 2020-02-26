@@ -21,5 +21,14 @@
       "code": "swe",
       "country": "Sweden"
     }
+  },
+  {
+    "targets": [
+      "https://www.reddit.com"
+    ],
+    "labels": {
+      "code": "usa",
+      "country": "USA"
+    }
   }
 ]
