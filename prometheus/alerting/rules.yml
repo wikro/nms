@@ -1,7 +1,7 @@
 groups:
   - name: "up"
     rules:
-      - alert: "DownFor5m"
+      - alert: "Down For 5m"
         expr: up == 0
         for: 5m
         labels:
@@ -12,7 +12,7 @@ groups:
 
   - name: "http"
     rules:
-      - alert: "HttpErrorFor5m"
+      - alert: "Http Error For 5m"
         expr: probe_success == 0
         for: 5m
         labels:
@@ -23,7 +23,7 @@ groups:
 
   - name: "icmp"
     rules:
-      - alert: "NoIcmpFor5m"
+      - alert: "No Icmp For 5m"
         expr: probe_success == 0
         for: 5m
         labels:
@@ -34,8 +34,8 @@ groups:
 
   - name: "memory"
     rules:
-      - alert: "NoMemoryIn15m"
-        expr: predict_linear(node_memory_MemAvailable_bytes[1h], 15 * 60) <= 0
+      - alert: "No Memory In 15m"
+        expr: predict_linear(node_memory_MemAvailable_bytes[1h], 15 * 60) <= 0 and predict_linear(node_memory_SwapFree_bytes[1h], 15 * 60) <= 0
         for: 5m
         labels:
           severity: "5"
@@ -43,18 +43,9 @@ groups:
           summary: "{{$labels.instance}}: No memory in 15m"
           description: "{{$labels.instance}} will run out of available memory in 15 minutes based on the last 15 minutes of of metrics."
 
-      - alert: "NoSwapIn15m"
-        expr: predict_linear(node_memory_SwapFree_bytes[1h], 15 * 60) <= 0
-        for: 5m
-        labels:
-          severity: "5"
-        annotations:
-          summary: "{{$labels.instance}}: No swap in 15m"
-          description: "{{$labels.instance}} will run out of available swap memory in 15 minutes based on the last 15 minutes of of metrics."
-
   - name: "disk"
     rules:
-      - alert: "NoSpaceIn24h"
+      - alert: "No Space In 24h"
         expr: predict_linear(node_filesystem_avail_bytes{fstype!~"(tmp|root)fs"}[1h], 24 * 3600) <= 0
         for: 5m
         labels:
@@ -63,7 +54,7 @@ groups:
           summary: "{{$labels.instance}}: {{$labels.mountpoint}} no space in 24h"
           description: "{{$labels.mountpoint}} on {{$labels.instance}} will run out of disk space in 24 hours based on the last hour of metrics."
 
-      - alert: "NoSpaceFor5m"
+      - alert: "No Space For 5m"
         expr: node_filesystem_avail_bytes{fstype!="tmpfs"} <= 0
         for: 5m
         labels:
