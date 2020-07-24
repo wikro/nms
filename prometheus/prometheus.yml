@@ -36,6 +36,11 @@ scrape_configs:
       - targets:
           - "hjkl.se:9229"
 
+  - job_name: "n9c"
+    static_configs:
+      - targets:
+        - "hjkl.se:3000"
+
   - job_name: "grafana"
     static_configs:
       - targets:

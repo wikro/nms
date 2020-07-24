@@ -45,3 +45,11 @@ modules:
     prober: icmp
     icmp:
       preferred_ip_protocol: "ip4"
+  ftp_connect:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      query_response:
+        - expect: "^220"
+          send: "QUIT"
+        - expect: "^221"

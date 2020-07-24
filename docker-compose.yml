@@ -31,6 +31,7 @@ services:
       - "prometheus-data:/prometheus:rw"
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--web.console.templates=/etc/prometheus/consoles"
       - "--web.external-url=https://nms.hjkl.se/prometheus"
       - "--web.route-prefix=/"
       - "--web.enable-lifecycle"
