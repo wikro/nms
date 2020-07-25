@@ -37,9 +37,10 @@ scrape_configs:
           - "hjkl.se:9229"
 
   - job_name: "n9c"
+    scheme: "https"
     static_configs:
       - targets:
-        - "hjkl.se:3000"
+        - "nordic9-crawler.herokuapp.com"
 
   - job_name: "grafana"
     static_configs:
