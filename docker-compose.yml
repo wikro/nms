@@ -36,7 +36,7 @@ services:
       - "--web.route-prefix=/"
       - "--web.enable-lifecycle"
       - "--web.enable-admin-api"
-      - "--storage.tsdb.retention.time=90d"
+      - "--storage.tsdb.retention.time=2y"
 
   alertmanager:
     image: "prom/alertmanager:latest"
