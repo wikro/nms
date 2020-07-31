@@ -37,6 +37,7 @@ scrape_configs:
           - "hjkl.se:9229"
 
   - job_name: "n9c"
+    scrape_interval: "1h"
     scheme: "https"
     static_configs:
       - targets:
