@@ -38,6 +38,7 @@ scrape_configs:
 
   - job_name: "n9c"
     scrape_interval: "1h"
+    scrape_timeout: "1m"
     scheme: "https"
     static_configs:
       - targets:
