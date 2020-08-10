@@ -13,7 +13,7 @@ groups:
   - name: "http"
     rules:
       - alert: "Http Error For 5m"
-        expr: probe_success == 0
+        expr: probe_success{job="blackbox_http"} == 0
         for: 5m
         labels:
           severity: "5"
@@ -24,7 +24,7 @@ groups:
   - name: "icmp"
     rules:
       - alert: "No Icmp For 5m"
-        expr: probe_success == 0
+        expr: probe_success{job="blackbox_icmp"} == 0
         for: 5m
         labels:
           severity: "5"
