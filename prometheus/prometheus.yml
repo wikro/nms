@@ -36,6 +36,13 @@ scrape_configs:
       - targets:
           - "hjkl.se:9229"
 
+  - job_name: "gw2"
+    scrape_interval: "5m"
+    scrape_timeout: "1m"
+    static_configs:
+      - targets:
+          - "gw2_exporter:2000"
+
   - job_name: "n9c"
     scheme: "https"
     static_configs:
