@@ -54,12 +54,12 @@ groups:
           summary: "{{$labels.instance}}: {{$labels.mountpoint}} no space in 24h"
           description: "{{$labels.mountpoint}} on {{$labels.instance}} will run out of disk space in 24 hours based on the last hour of metrics."
 
-      - alert: "No Space For 5m"
-        expr: node_filesystem_avail_bytes{fstype!="tmpfs"} <= 0
+      - alert: "Low Space"
+        expr: node_filesystem_avail_bytes{fstype!~"(tmp|root)fs"} / node_filesystem_size_bytes < 0.05
         for: 5m
         labels:
           severity: "5"
         annotations:
-          summary: "{{$labels.instance}}: {{$labels.mountpoint}} no space"
-          description: "{{$labels.mountpoint}} on {{$labels.instance}} is out of free disk space."
+          summary: "{{$labels.instance}}: {{$labels.mountpoint}} <5% free"
+          description: "{{$labels.mountpoint}} on {{$labels.instance}} has less than 5% free disk space."
 
