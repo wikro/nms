@@ -43,12 +43,6 @@ scrape_configs:
       - targets:
           - "gw2_exporter:2000"
 
-  - job_name: "n9c"
-    scheme: "https"
-    static_configs:
-      - targets:
-        - "nordic9-crawler.herokuapp.com"
-
   - job_name: "grafana"
     static_configs:
       - targets:
